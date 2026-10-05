@@ -1,0 +1,55 @@
+gsm,sample,pooled,disease_state,sex,age,bmi,hba1c,race,chemistry,center,cause_of_death
+GSM6846488,Islet28,False,Type2Diabetic,Male,51,35.6,7.1,Hispanic,V2,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846489,Islet29,False,NonDiabetic,Male,54,35.6,5.1,White,V2,Wisconsin,Cerebrovascular/stroke
+GSM6846490,Islet30,False,Type2Diabetic,Female,52,42.8,6.6,Hispanic,V2,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846491,Islet31,False,Type2Diabetic,Male,59,27.7,6.5,Hispanic,V2,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846492,Islet32,False,Type2Diabetic,Male,35,27.7,6.3,White,V2,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846493,Islet33,False,Type2Diabetic,Female,37,38.1,8.2,White,V2,UPenn,Cerebrovascular/stroke
+GSM6846494,Islet34,False,NonDiabetic,Male,40,25.3,5.3,Hispanic,V2,Scharp-Lacy,Head trauma
+GSM6846495,Islet37,False,NonDiabetic,Male,32,28.5,5.2,White,V2,NA,Head trauma - gunshot wound/suicide
+GSM6846496,Islet38,False,NonDiabetic,Male,21,27.3,5.4,Hispanic,V2,Scharp-Lacy,Head trauma
+GSM6846497,Islet39,False,Type2Diabetic,Female,50,35.4,9.9,White,V2,Southern California IsletCell Resource Center,Cerebrovascular/stroke
+GSM6846498,Islet40,False,PreDiabetic,Female,53,30,6,Hispanic,V2,Southern California IsletCell Resource Center,Cerebrovascular/stroke
+GSM6846499,Islet41,False,Type2Diabetic,Male,61,27.4,7.9,AfricanAmerican,V2,Scharp-Lacy,NR
+GSM6846500,Islet42,False,NonDiabetic,Male,66,27.2,4.7,White,V3,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846501,Islet44,False,Type2Diabetic,Male,54,33.7,8,AfricanAmerican,V3,UPenn,Cerebrovascular/stroke
+GSM6846502,Islet45,False,NonDiabetic,Female,50,24.6,5.1,White,V3,Miami,Cerebrovascular/stroke
+GSM6846503,Islet47,False,NonDiabetic,Female,53,22.7,4.8,White,V3,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846504,Islet48,False,Type2Diabetic,Female,37,33,13.1,Hispanic,V3,Scharp-Lacy,Head trauma
+GSM6846505,Islet47/48_MS19006,True,NonDiabetic/Type2Diabetic,Female/Female,53/37,22.7/33,4.8/13.1,White/Hispanic,V3,Scharp-Lacy,Cerebrovascular/stroke / Head trauma
+GSM6846506,Islet47/48_MS19007,True,NonDiabetic/Type2Diabetic,Female/Female,53/37,22.7/33,4.8/13.1,White/Hispanic,V3,Scharp-Lacy,Cerebrovascular/stroke / Head trauma
+GSM6846507,Islet50,False,PreDiabetic,Male,53,33.3,5.7,White,V3,Wisconsin,Cerebrovascular/stroke
+GSM6846508,Islet52,False,Type2Diabetic,Female,34,31.7,7.3,White,V3,Wisconsin,Cerebrovascular/stroke
+GSM6846509,Islet53,False,PreDiabetic,Male,62,32,5.8,Hispanic,V3,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846510,Islet54,False,NonDiabetic,Male,37,24.2,5.5,Hispanic,V3,Southern California IsletCell Resource Center,Head trauma
+GSM6846511,Islet55,False,PreDiabetic,Male,50,32.8,6,Hispanic,V3,Scharp-Lacy,Anoxia
+GSM6846512,Islet56,False,PreDiabetic,Female,52,39.8,6.4,White,V3,Wisconsin,Anoxia
+GSM6846513,Islet57,False,NonDiabetic,Female,35,33.4,5.4,White,V3,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846514,Islet58,False,PreDiabetic,Male,51,26.7,5.7,Hispanic,V3,Southern California IsletCell Resource Center,Anoxia
+GSM6846515,Islet57/58_MS19016,True,NonDiabetic/PreDiabetic,Female/Male,35/51,33.4/26.7,5.4/5.7,White/Hispanic,V3,Scharp-Lacy/Southern California IsletCell Resource Center,Cerebrovascular/stroke / Anoxia
+GSM6846516,Islet57/58_MS19017,True,NonDiabetic/PreDiabetic,Female/Male,35/51,33.4/26.7,5.4/5.7,White/Hispanic,V3,Scharp-Lacy/Southern California IsletCell Resource Center,Cerebrovascular/stroke / Anoxia
+GSM6846517,Islet59,False,NonDiabetic,Male,48,38.8,5.4,White,V3,Wisconsin,Cerebrovascular/stroke
+GSM6846518,Islet60,False,Type2Diabetic,Male,58,32.5,6.7,White,V3,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846519,Islet59/60_MS19020,True,NonDiabetic/Type2Diabetic,Male/Male,48/58,38.8/32.5,5.4/6.7,White/White,V3,Wisconsin/Scharp-Lacy,Cerebrovascular/stroke
+GSM6846520,Islet59/60_MS19021,True,NonDiabetic/Type2Diabetic,Male/Male,48/58,38.8/32.5,5.4/6.7,White/White,V3,Wisconsin/Scharp-Lacy,Cerebrovascular/stroke
+GSM6846521,Islet61,False,NonDiabetic,Female,53,40,5.5,White,V3,Wisconsin,Cerebrovascular/stroke
+GSM6846522,Islet62,False,PreDiabetic,Male,45,32.6,5.8,AfricanAmerican,V3,Scharp-Lacy,Anoxia
+GSM6846523,Islet63,False,PreDiabetic,Male,49,28.4,5.9,AfricanAmerican,V3,Scharp-Lacy,Anoxia
+GSM6846524,Islet68,False,NonDiabetic,Male,52,29,5.1,White,V3,Wisconsin,Head trauma
+GSM6846525,Islet70/71_MS19034,True,PreDiabetic/Type2Diabetic,Female/Male,57/63,32.9/31.7,5.7/5.9,White/White,V3,Southern California IsletCell Resource Center/Scharp-Lacy,Cerebrovascular/stroke
+GSM6846526,Islet70/71_MS19035,True,PreDiabetic/Type2Diabetic,Female/Male,57/63,32.9/31.7,5.7/5.9,White/White,V3,Southern California IsletCell Resource Center/Scharp-Lacy,Cerebrovascular/stroke
+GSM6846527,Islet73,False,NonDiabetic,Male,55,28.4,5.6,White,V3,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846528,Islet80,False,NonDiabetic,Male,42,25,5.5,AfricanAmerican,V3,Miami,Head trauma
+GSM6846529,Islet84/85_MS19042,True,Type2Diabetic/PreDiabetic,Male/Male,52/58,24.7/26.6,6.1/6.1,Hispanic/Hispanic,V3,Scharp-Lacy/Miami,NA
+GSM6846530,Islet84/85_MS19043,True,Type2Diabetic/PreDiabetic,Male/Male,52/58,24.7/26.6,6.1/6.1,Hispanic/Hispanic,V3,Scharp-Lacy/Miami,NA
+GSM6846531,Islet89,False,PreDiabetic,Female,30,27.1,5.8,Hispanic,V3,Miami,Anoxia
+GSM6846532,Islet91,False,Type2Diabetic,Male,53,25.8,6.7,White,V3,Scharp-Lacy,Anoxia
+GSM6846533,Islet101,False,PreDiabetic,Male,48,25.7,5.9,White,V3,Scharp-Lacy,Anoxia
+GSM6846534,Islet104,False,NonDiabetic,Male,48,20.2,5.2,AfricanAmerican,V3,Scharp-Lacy,Cerebrovascular/stroke
+GSM6846535,Islet107,False,NonDiabetic,Male,26,24.2,5.2,Hispanic,V3,Scharp-Lacy,Head trauma
+GSM6846536,Islet118/119_MS20086,True,PreDiabetic/Type2Diabetic,Male/Female,25/62,31.6/28.5,5.9/7.6,White/AfricanAmerican,V3,Scharp-Lacy/Southern California IsletCell Resource Center,Head trauma/NA
+GSM6846537,Islet118/119_MS20087,True,PreDiabetic/Type2Diabetic,Male/Female,25/62,31.6/28.5,5.9/7.6,White/AfricanAmerican,V3,Scharp-Lacy/Southern California IsletCell Resource Center,Head trauma/NA
+GSM6846538,Islet123,False,NonDiabetic,Female,60,28.3,4.6,Hispanic,V3,Scharp-Lacy,Head trauma
+GSM6846539,Islet126,False,Type2Diabetic,Female,38,43.9,7,AfricanAmerican,V3,UPenn,Anoxia
+GSM6846540,Islet127,False,PreDiabetic,Male,60,29.9,5.8,White,V3,UPenn,Anoxia
+GSM6846541,Islet128,False,Type2Diabetic,Male,60,41.3,7.5,Hispanic,V3,southern California IsletCell Resource Center,Cerebrovascular/stroke

@@ -1,0 +1,15 @@
+gsm,sample,sex,age,condition,bmi
+GSM8302405,"SAT, sample_9S, snRNAseq",female,37,obese,39.5
+GSM8302406,"SAT, sample_10S, snRNAseq",female,41,obese diabetic,61.5
+GSM8302407,"SAT, sample_13S, snRNAseq",female,42,lean,23
+GSM8302408,"SAT, sample_17S, snRNAseq",female,34,obese diabetic,52.6
+GSM8302409,"SAT, sample_SAT22, snRNAseq",male,50,obese diabetic,39.7
+GSM8302410,"SAT, sample_SAT54, snRNAseq",female,61,lean,22.3
+GSM8302411,"SAT, sample_SAT1, snRNAseq",male,43,obese,41.7
+GSM8302412,"SAT, sample_SAT18, snRNAseq",female,29,obese,61.3
+GSM8302413,"SAT, sample_SAT34, snRNAseq",male,40,obese,62.5
+GSM8302414,"SAT, sample_SAT39, snRNAseq",male,41,obese,61.2
+GSM8302415,"SAT, sample_SAT4, snRNAseq",male,30,obese,49.7
+GSM8302416,"SAT, sample_SAT51, snRNAseq",female,44,obese,57
+GSM8302417,"SAT, sample_SAT58, snRNAseq",male,54,lean,24.3
+GSM8302418,"SAT, sample_SAT60, snRNAseq",male,26,lean,23.5
