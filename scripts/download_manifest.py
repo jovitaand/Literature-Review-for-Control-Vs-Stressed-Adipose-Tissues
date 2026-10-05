@@ -10,7 +10,7 @@ Resumes partial files (curl -C -), skips files already at roughly the manifest s
 and writes a log to data/raw/download_log.tsv. Needs curl and outbound access to
 www.ncbi.nlm.nih.gov and figshare.com.
 """
-import csv, subprocess, sys
+import csv, subprocess, sys, time
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent
@@ -37,9 +37,24 @@ for r in rows:
     if dry:
         continue
     d.mkdir(parents=True, exist_ok=True)
-    rc = subprocess.call(["curl", "-L", "--fail", "-C", "-", "--retry", "3", "-sS",
-                          "-o", str(dest), r["download_url"]])
-    status = "ok" if rc == 0 else f"curl_exit_{rc}"
+    # Figshare answers HTTP 202 (no body) while it builds a zip; poll until a body arrives.
+    status = "failed"
+    for attempt in range(1, 11):
+        res = subprocess.run(["curl", "-L", "-C", "-", "-sS", "-o", str(dest), "-w", "%{http_code}", r["download_url"]],
+                             capture_output=True, text=True)
+        code = res.stdout.strip()
+        got = dest.stat().st_size if dest.exists() else 0
+        if res.returncode == 0 and code.startswith("2") and code != "202" and got > 1000:
+            status = "ok"
+            break
+        if code == "202":
+            print(f"       HTTP 202 (server preparing file), retry {attempt}/10 in 30 s")
+            if dest.exists() and got == 0: dest.unlink()
+            time.sleep(30)
+            continue
+        status = f"http_{code or 'none'}_curl_{res.returncode}: {res.stderr.strip()[:80]}"
+        if dest.exists() and got == 0: dest.unlink()
+        break
     got = dest.stat().st_size if dest.exists() else 0
     print(f"       {status}, {got/1e6:.1f} MB")
     log.append((r["dataset_id"], r["file_name"], status, got))
