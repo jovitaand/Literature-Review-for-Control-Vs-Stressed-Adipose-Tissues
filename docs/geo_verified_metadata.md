@@ -41,7 +41,7 @@
 ## 5. Corrections to earlier documents
 - Xin accession GSE81608 is now verified (earlier marked unverified).
 - Lawlor's GSE86473 is a SuperSeries; the cell data are in its subseries.
-- Avrahami's cell counts per donor are now known: each donor contributes about 11 to 54 cells in total, so cell-type-specific pseudobulk will be very sparse.
+- Avrahami's cell counts per donor are now known: adult controls and T2D donors contribute only 11 to 54 cells each (the newborn contributes 84), so cell-type-specific pseudobulk will be very sparse.
 - GSE278526 is scRNA-seq of stromal cells, not snRNA-seq as the manifest says.
 - Bandesh details I earlier called "10x version not confirmed": both V2 and V3 chemistry are used.
 
