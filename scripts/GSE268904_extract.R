@@ -8,6 +8,7 @@ WORK_DIR <- "/content/gse268904_raw"             # extracted files (treated as r
 OUT_DIR  <- "/content/gse268904_qc"              # small outputs to download or copy to Drive
 MIN_UMI  <- 500                                  # barcodes below this total UMI are not counted as nuclei
 ENDO_MARKERS <- c("PECAM1", "VWF", "CLDN5", "EGFL7", "FLT1", "PTPRB")  # crude endothelial panel
+GENES_EXTRA <- character(0)                      # extra genes whose raw counts you also want per nucleus, e.g. c("ADIPOQ", "PDGFRA")
 RUN_SEURAT <- FALSE                              # TRUE = also run the optional clustering section (slow)
 dir.create(WORK_DIR, recursive = TRUE, showWarnings = FALSE)
 dir.create(OUT_DIR,  recursive = TRUE, showWarnings = FALSE)
@@ -63,7 +64,7 @@ chk <- inv[, .(n_files = .N, has_barcodes = any(file_type == "barcodes"), has_fe
 print(merge(meta[, .(gsm, sample)], chk, by = "gsm", all = TRUE))
 
 mito_prefix <- "^MT-"
-res <- list()
+res <- list(); bt_list <- list()
 for (i in seq_len(nrow(meta))) {
   gsm <- meta$gsm[i]; smp <- meta$sample[i]
   pick <- function(type) files[grepl(gsm, files) & grepl(type, files)]
@@ -79,6 +80,14 @@ for (i in seq_len(nrow(meta))) {
   present <- ENDO_MARKERS[ENDO_MARKERS %in% gene]
   det <- if (length(present)) Matrix::colSums(m[match(present, gene), , drop = FALSE] > 0) else rep(0, ncol(m))
   keep <- umi >= MIN_UMI
+  # one row per barcode, none dropped
+  gp <- unique(c(ENDO_MARKERS, GENES_EXTRA)); gp <- gp[gp %in% gene]
+  bt <- data.table(row_type = "barcode", gsm = gsm, sample = smp, condition = meta$condition[i], sex = meta$sex[i], age = meta$age[i], bmi = meta$bmi[i],
+    barcode = bc, total_umi = as.numeric(umi), n_genes_detected = as.integer(ngene), mito_frac = round(as.numeric(mt), 5),
+    n_endo_markers_detected = as.integer(det), passes_min_umi = keep,
+    endo_ge2 = keep & det >= 2, endo_ge3 = keep & det >= 3, endo_ge4 = keep & det >= 4)
+  if (length(gp)) { cnt <- as.matrix(Matrix::t(m[match(gp, gene), , drop = FALSE])); colnames(cnt) <- paste0("count_", gp); bt <- cbind(bt, as.data.table(cnt)) }
+  bt_list[[i]] <- bt
   res[[i]] <- data.table(gsm = gsm, sample = smp, condition = meta$condition[i], status = "ok",
     n_barcodes_file = length(bc), n_genes_file = length(gene), n_nuclei_umi_ge_min = sum(keep),
     median_umi = median(umi[keep]), median_genes = median(ngene[keep]), median_mito_frac = round(median(mt[keep]), 4),
@@ -138,7 +147,7 @@ if (exists("seu")) {
   s2 <- copy(seu)[, .(sample, seurat_nuclei_after_qc = nuclei_after_qc, seurat_n_clusters = n_clusters, seurat_endothelial_clusters = endo_clusters, seurat_endothelial_nuclei = endothelial_nuclei)]
   final <- merge(final, s2, by = "sample", all.x = TRUE)
 }
-final[, row_type := "sample"]
+final[, row_type := "sample_summary"]
 # ---- group and overall rows ----
 num <- c("n_barcodes_file", "n_nuclei_umi_ge_min", "endo_ge2", "endo_ge3", "endo_ge4", "seurat_nuclei_after_qc", "seurat_endothelial_nuclei")
 num <- intersect(num, names(final))
@@ -146,13 +155,17 @@ grp <- final[, c(list(n_samples = .N), lapply(.SD, sum, na.rm = TRUE)), by = con
 ovr <- final[, c(list(n_samples = .N), lapply(.SD, sum, na.rm = TRUE)), .SDcols = num][, `:=`(row_type = "overall", condition = "ALL")]
 ovr[, notes := paste("Nuclei = barcodes with total UMI >=", MIN_UMI, "; endo_geK = nuclei with >= K of 6 endothelial genes detected (CRUDE estimate, not an annotation); ambient RNA can inflate endo_ge2;",
                      "identical features files across samples are expected; no data were removed; processed", format(Sys.time(), "%Y-%m-%d"))]
-final <- rbindlist(list(final, grp, ovr), fill = TRUE)
-lead <- c("row_type", "gsm", "sample", "condition", "sex", "age", "bmi", "n_samples", "status")
+summary_tbl <- rbindlist(list(final, grp, ovr), fill = TRUE)
+barcodes_tbl <- rbindlist(bt_list, fill = TRUE)
+final <- rbindlist(list(barcodes_tbl, summary_tbl), fill = TRUE)
+lead <- c("row_type", "gsm", "sample", "condition", "sex", "age", "bmi", "barcode", "n_samples", "status")
 setcolorder(final, c(intersect(lead, names(final)), setdiff(names(final), lead)))
 out_csv <- file.path(OUT_DIR, "GSE268904_consolidated.csv")
 fwrite(final, out_csv)
 cat("Wrote", out_csv, "|", nrow(final), "rows x", ncol(final), "columns |", round(file.info(out_csv)$size / 1e3, 1), "KB\n")
-print(final[row_type != "sample", c("row_type", "condition", "n_samples", "n_nuclei_umi_ge_min", "endo_ge3"), with = FALSE])
+cat("Barcode rows written:", nrow(barcodes_tbl), "| barcodes in source files:", sum(per_sample$n_barcodes_file, na.rm = TRUE), "\n")
+stopifnot(nrow(barcodes_tbl) == sum(per_sample$n_barcodes_file, na.rm = TRUE))
+print(final[row_type %in% c("group", "overall"), c("row_type", "condition", "n_samples", "n_nuclei_umi_ge_min", "endo_ge3"), with = FALSE])
 # Copy to Drive
 dest <- "/content/drive/MyDrive/gse268904_qc"
 dir.create(dest, showWarnings = FALSE); file.copy(out_csv, dest, overwrite = TRUE)
