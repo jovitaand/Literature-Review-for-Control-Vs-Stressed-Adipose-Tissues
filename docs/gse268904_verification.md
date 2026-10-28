@@ -21,3 +21,9 @@ Read 2026-10-28 from the GEO series record, all 14 GEO sample records, and the B
 - Sample names fall into two series ("9S, 10S, 13S, 17S" and "SAT1 to SAT60"). **[I]** Check whether this reflects two processing batches; two of three diabetic donors are in the first series and one is in the second.
 - To meet "more than 10,000 endothelial cells" you will likely need the atlas (65 donors) or to count endothelial nuclei yourself after annotation. The atlas data are advertised as an interactive resource in the paper; its location was not verified.
 - Next steps: allow `ftp.ncbi.nlm.nih.gov` (or run `scripts/download_manifest.py` locally), count barcodes per sample, annotate endothelial clusters (for example PECAM1, VWF, CLDN5), and count nuclei per group.
+
+## Update 2026-10-29: can endothelial cell counts be found?
+Attempted again. The count files (`ftp.ncbi.nlm.nih.gov`), the paper (PMC, Nature) and the preprint (bioRxiv) are still unreachable, so **no endothelial cell or nucleus count could be verified**. The SRA experiment pages are reachable and give sequencing depth only (`data/metadata/GSE268904_sra_spots.csv`):
+- 14 libraries, 309M to 371M read pairs each, 4.75 billion in total (lean 1.33B, obese 2.39B, obese diabetic 1.04B). Depth is similar across groups.
+- Reads per sample do not give nuclei per sample. **[I]** Under a plausible 30,000 to 100,000 reads per nucleus, the total would be roughly 50,000 to 150,000 nuclei, which is consistent with the secondary report of over 120,000 nuclei (unconfirmed). Whether endothelial nuclei exceed 10,000 depends on their share (they would need to be roughly 7% to 20% of nuclei under that range); that cannot be settled without counting.
+- The 14 per-sample matrices contain all cell types; endothelial nuclei must be identified by annotation (for example PECAM1, VWF, CLDN5).
