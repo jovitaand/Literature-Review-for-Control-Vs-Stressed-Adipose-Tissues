@@ -9,6 +9,15 @@ OUT_DIR  <- "/content/gse268904_qc"              # small outputs to download or 
 MIN_UMI  <- 500                                  # barcodes below this total UMI are not counted as nuclei
 ENDO_MARKERS <- c("PECAM1", "VWF", "CLDN5", "EGFL7", "FLT1", "PTPRB")  # crude endothelial panel
 GENES_EXTRA <- character(0)                      # extra genes whose raw counts you also want per nucleus, e.g. c("ADIPOQ", "PDGFRA")
+ENDO_MIN_MARKERS <- 3                            # specific call: at least this many of the 6 core endothelial genes detected
+ENDO_OVER_OTHER  <- 2                            # ... and endothelial score >= this many times the best non-endothelial panel score
+PANELS <- list(                                  # lineage marker panels (scored per nucleus as counts per 10,000 UMI)
+  endothelial           = c(ENDO_MARKERS, "CDH5", "KDR"),
+  lymphatic_endothelial = c("PROX1", "LYVE1", "FLT4"),
+  adipocyte             = c("ADIPOQ", "PLIN1", "LIPE", "LEP"),
+  fibroblast_progenitor = c("PDGFRA", "DCN", "LUM", "COL1A1"),
+  immune                = c("PTPRC", "CD163", "MRC1", "CD14"),
+  mural                 = c("ACTA2", "RGS5", "MYH11", "PDGFRB"))
 RUN_SEURAT <- FALSE                              # TRUE = also run the optional clustering section (slow)
 dir.create(WORK_DIR, recursive = TRUE, showWarnings = FALSE)
 dir.create(OUT_DIR,  recursive = TRUE, showWarnings = FALSE)
@@ -81,11 +90,19 @@ for (i in seq_len(nrow(meta))) {
   det <- if (length(present)) Matrix::colSums(m[match(present, gene), , drop = FALSE] > 0) else rep(0, ncol(m))
   keep <- umi >= MIN_UMI
   # one row per barcode, none dropped
-  gp <- unique(c(ENDO_MARKERS, GENES_EXTRA)); gp <- gp[gp %in% gene]
+  gp <- unique(c(unlist(PANELS), GENES_EXTRA)); gp <- gp[gp %in% gene]
+  sc <- sapply(PANELS, function(g) { g <- g[g %in% gene]; if (length(g)) Matrix::colSums(m[match(g, gene), , drop = FALSE]) / pmax(umi, 1) * 1e4 else rep(0, ncol(m)) })
+  if (is.null(dim(sc))) sc <- matrix(sc, ncol = length(PANELS))
+  colnames(sc) <- names(PANELS)
+  top <- ifelse(rowSums(sc) == 0, "none", colnames(sc)[max.col(sc, ties.method = "first")])
+  best_other <- apply(sc[, colnames(sc) != "endothelial", drop = FALSE], 1, max)
+  endo_spec <- keep & det >= ENDO_MIN_MARKERS & top == "endothelial" & sc[, "endothelial"] > 0 & sc[, "endothelial"] >= ENDO_OVER_OTHER * best_other
+  sdt <- as.data.table(round(sc, 3)); setnames(sdt, paste0("score_", colnames(sc)))
   bt <- data.table(row_type = "barcode", gsm = gsm, sample = smp, condition = meta$condition[i], sex = meta$sex[i], age = meta$age[i], bmi = meta$bmi[i],
     barcode = bc, total_umi = as.numeric(umi), n_genes_detected = as.integer(ngene), mito_frac = round(as.numeric(mt), 5),
     n_endo_markers_detected = as.integer(det), passes_min_umi = keep,
-    endo_ge2 = keep & det >= 2, endo_ge3 = keep & det >= 3, endo_ge4 = keep & det >= 4)
+    endo_ge2 = keep & det >= 2, endo_ge3 = keep & det >= 3, endo_ge4 = keep & det >= 4, top_lineage = top, endo_specific = endo_spec)
+  bt <- cbind(bt, sdt)
   if (length(gp)) { cnt <- as.matrix(Matrix::t(m[match(gp, gene), , drop = FALSE])); colnames(cnt) <- paste0("count_", gp); bt <- cbind(bt, as.data.table(cnt)) }
   bt_list[[i]] <- bt
   res[[i]] <- data.table(gsm = gsm, sample = smp, condition = meta$condition[i], status = "ok",
@@ -93,7 +110,7 @@ for (i in seq_len(nrow(meta))) {
     median_umi = median(umi[keep]), median_genes = median(ngene[keep]), median_mito_frac = round(median(mt[keep]), 4),
     raw_counts_integer = all(m@x == round(m@x)),
     markers_present = paste(present, collapse = "|"),
-    endo_ge2 = sum(keep & det >= 2), endo_ge3 = sum(keep & det >= 3), endo_ge4 = sum(keep & det >= 4))
+    endo_ge2 = sum(keep & det >= 2), endo_ge3 = sum(keep & det >= 3), endo_ge4 = sum(keep & det >= 4), endo_specific = sum(endo_spec))
   cat(smp, ":", length(bc), "barcodes;", sum(keep), "with UMI >=", MIN_UMI, "\n")
   rm(m); gc(verbose = FALSE)
 }
@@ -149,11 +166,11 @@ if (exists("seu")) {
 }
 final[, row_type := "sample_summary"]
 # ---- group and overall rows ----
-num <- c("n_barcodes_file", "n_nuclei_umi_ge_min", "endo_ge2", "endo_ge3", "endo_ge4", "seurat_nuclei_after_qc", "seurat_endothelial_nuclei")
+num <- c("n_barcodes_file", "n_nuclei_umi_ge_min", "endo_ge2", "endo_ge3", "endo_ge4", "endo_specific", "seurat_nuclei_after_qc", "seurat_endothelial_nuclei")
 num <- intersect(num, names(final))
 grp <- final[, c(list(n_samples = .N), lapply(.SD, sum, na.rm = TRUE)), by = condition, .SDcols = num][, row_type := "group"]
 ovr <- final[, c(list(n_samples = .N), lapply(.SD, sum, na.rm = TRUE)), .SDcols = num][, `:=`(row_type = "overall", condition = "ALL")]
-ovr[, notes := paste("Nuclei = barcodes with total UMI >=", MIN_UMI, "; endo_geK = nuclei with >= K of 6 endothelial genes detected (CRUDE estimate, not an annotation); ambient RNA can inflate endo_ge2;",
+ovr[, notes := paste("Nuclei = barcodes with total UMI >=", MIN_UMI, "; endo_geK = nuclei with >= K of 6 endothelial genes detected (CRUDE estimate, not an annotation); endo_specific = >= ENDO_MIN_MARKERS core genes AND endothelial panel is the top lineage AND >= ENDO_OVER_OTHER x the best other panel (still marker-based, not a cluster annotation); ambient RNA can inflate endo_ge2;",
                      "identical features files across samples are expected; no data were removed; processed", format(Sys.time(), "%Y-%m-%d"))]
 summary_tbl <- rbindlist(list(final, grp, ovr), fill = TRUE)
 barcodes_tbl <- rbindlist(bt_list, fill = TRUE)
@@ -165,7 +182,7 @@ fwrite(final, out_csv)
 cat("Wrote", out_csv, "|", nrow(final), "rows x", ncol(final), "columns |", round(file.info(out_csv)$size / 1e3, 1), "KB\n")
 cat("Barcode rows written:", nrow(barcodes_tbl), "| barcodes in source files:", sum(per_sample$n_barcodes_file, na.rm = TRUE), "\n")
 stopifnot(nrow(barcodes_tbl) == sum(per_sample$n_barcodes_file, na.rm = TRUE))
-print(final[row_type %in% c("group", "overall"), c("row_type", "condition", "n_samples", "n_nuclei_umi_ge_min", "endo_ge3"), with = FALSE])
+print(final[row_type %in% c("group", "overall"), c("row_type", "condition", "n_samples", "n_nuclei_umi_ge_min", "endo_ge3", "endo_specific"), with = FALSE])
 # Copy to Drive
 dest <- "/content/drive/MyDrive/gse268904_qc"
 dir.create(dest, showWarnings = FALSE); file.copy(out_csv, dest, overwrite = TRUE)
