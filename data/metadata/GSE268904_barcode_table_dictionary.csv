@@ -1,0 +1,52 @@
+column,feature_group,type,n_entries,n_null,n_unique,description
+row_type,identifier / sample metadata,character,131641,0,1,Row kind (always barcode in this table)
+gsm,identifier / sample metadata,character,131641,0,14,GEO sample accession
+sample,identifier / sample metadata,character,131641,0,14,Sample name
+condition,identifier / sample metadata,character,131641,0,3,lean / obese / obese diabetic
+sex,identifier / sample metadata,character,131641,0,2,Donor sex
+age,identifier / sample metadata,integer,131641,0,13,Donor age (years)
+bmi,identifier / sample metadata,numeric,131641,0,14,Donor BMI
+barcode,identifier / sample metadata,character,131641,0,129496,Nucleus barcode (unique within a sample)
+total_umi,per-nucleus QC metric,integer,131641,0,19758,Total RNA molecules (UMIs) in the nucleus
+n_genes_detected,per-nucleus QC metric,integer,131641,0,9009,Genes with at least one count
+mito_frac,per-nucleus QC metric,numeric,131641,0,3079,Fraction of counts from mitochondrial genes
+n_endo_markers_detected,per-nucleus QC metric,integer,131641,0,7,Core endothelial markers detected (0-6)
+passes_min_umi,per-nucleus QC metric,logical,131641,0,1,Total UMI >= 500
+endo_ge2,endothelial call / flag,integer,131641,0,2,At least 2 of 6 core endothelial markers
+endo_ge3,endothelial call / flag,integer,131641,0,2,At least 3 of 6
+endo_ge4,endothelial call / flag,integer,131641,0,2,At least 4 of 6
+top_lineage,endothelial call / flag,character,131641,0,7,Lineage panel with highest score (or none)
+endo_specific,endothelial call / flag,integer,131641,0,2,"Specific endothelial call: >=3 core markers, endothelial is top lineage, score >= 2x best other lineage"
+score_endothelial,lineage panel score,numeric,131641,0,31733,"Endothelial panel score (counts per 10,000 UMI)"
+score_lymphatic_endothelial,lineage panel score,numeric,131641,0,11684,Lymphatic endothelial panel score
+score_adipocyte,lineage panel score,numeric,131641,0,19956,Adipocyte panel score
+score_fibroblast_progenitor,lineage panel score,numeric,131641,0,19928,Fibroblast/progenitor panel score
+score_immune,lineage panel score,numeric,131641,0,36124,Immune panel score
+score_mural,lineage panel score,numeric,131641,0,11522,Mural (pericyte/smooth muscle) panel score
+count_PECAM1,raw gene count,integer,131641,0,88,Raw count of PECAM1 (mural)
+count_VWF,raw gene count,integer,131641,0,105,Raw count of VWF (mural)
+count_CLDN5,raw gene count,integer,131641,0,18,Raw count of CLDN5 (mural)
+count_EGFL7,raw gene count,integer,131641,0,30,Raw count of EGFL7 (endothelial)
+count_FLT1,raw gene count,integer,131641,0,103,Raw count of FLT1 (endothelial)
+count_PTPRB,raw gene count,integer,131641,0,108,Raw count of PTPRB (endothelial)
+count_CDH5,raw gene count,integer,131641,0,29,Raw count of CDH5 (endothelial)
+count_KDR,raw gene count,integer,131641,0,16,Raw count of KDR (endothelial)
+count_PROX1,raw gene count,integer,131641,0,19,Raw count of PROX1 (endothelial)
+count_LYVE1,raw gene count,integer,131641,0,52,Raw count of LYVE1 (endothelial)
+count_FLT4,raw gene count,integer,131641,0,10,Raw count of FLT4 (endothelial)
+count_ADIPOQ,raw gene count,integer,131641,0,60,Raw count of ADIPOQ (lymphatic endothelial)
+count_PLIN1,raw gene count,integer,131641,0,94,Raw count of PLIN1 (lymphatic endothelial)
+count_LIPE,raw gene count,integer,131641,0,43,Raw count of LIPE (lymphatic endothelial)
+count_LEP,raw gene count,integer,131641,0,39,Raw count of LEP (adipocyte)
+count_PDGFRA,raw gene count,integer,131641,0,67,Raw count of PDGFRA (adipocyte)
+count_DCN,raw gene count,integer,131641,0,85,Raw count of DCN (adipocyte)
+count_LUM,raw gene count,integer,131641,0,18,Raw count of LUM (adipocyte)
+count_COL1A1,raw gene count,integer,131641,0,31,Raw count of COL1A1 (fibroblast/progenitor)
+count_PTPRC,raw gene count,integer,131641,0,80,Raw count of PTPRC (fibroblast/progenitor)
+count_CD163,raw gene count,integer,131641,0,102,Raw count of CD163 (fibroblast/progenitor)
+count_MRC1,raw gene count,integer,131641,0,222,Raw count of MRC1 (fibroblast/progenitor)
+count_CD14,raw gene count,integer,131641,0,10,Raw count of CD14 (immune)
+count_ACTA2,raw gene count,integer,131641,0,42,Raw count of ACTA2 (immune)
+count_RGS5,raw gene count,integer,131641,0,23,Raw count of RGS5 (immune)
+count_MYH11,raw gene count,integer,131641,0,38,Raw count of MYH11 (immune)
+count_PDGFRB,raw gene count,integer,131641,0,40,Raw count of PDGFRB (mural)

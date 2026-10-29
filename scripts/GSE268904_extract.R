@@ -179,11 +179,16 @@ lead <- c("row_type", "gsm", "sample", "condition", "sex", "age", "bmi", "barcod
 setcolorder(final, c(intersect(lead, names(final)), setdiff(names(final), lead)))
 out_csv <- file.path(OUT_DIR, "GSE268904_consolidated.csv")
 fwrite(final, out_csv)
+# Split by row type and drop columns that are entirely null within each part
+drop_all_null <- function(d) d[, which(!vapply(d, function(x) all(is.na(x)), logical(1))), with = FALSE]
+barcodes_clean <- drop_all_null(final[row_type == "barcode"]); summary_clean <- drop_all_null(final[row_type != "barcode"])
+fwrite(barcodes_clean, file.path(OUT_DIR, "GSE268904_barcodes_clean.csv")); fwrite(summary_clean, file.path(OUT_DIR, "GSE268904_summary_clean.csv"))
+cat("barcodes_clean:", nrow(barcodes_clean), "rows x", ncol(barcodes_clean), "cols | summary_clean:", nrow(summary_clean), "rows x", ncol(summary_clean), "cols\n")
 cat("Wrote", out_csv, "|", nrow(final), "rows x", ncol(final), "columns |", round(file.info(out_csv)$size / 1e3, 1), "KB\n")
 cat("Barcode rows written:", nrow(barcodes_tbl), "| barcodes in source files:", sum(per_sample$n_barcodes_file, na.rm = TRUE), "\n")
 stopifnot(nrow(barcodes_tbl) == sum(per_sample$n_barcodes_file, na.rm = TRUE))
 print(final[row_type %in% c("group", "overall"), c("row_type", "condition", "n_samples", "n_nuclei_umi_ge_min", "endo_ge3", "endo_specific"), with = FALSE])
 # Copy to Drive
 dest <- "/content/drive/MyDrive/gse268904_qc"
-dir.create(dest, showWarnings = FALSE); file.copy(out_csv, dest, overwrite = TRUE)
+if (dir.exists("/content/drive/MyDrive")) { dir.create(dest, recursive = TRUE, showWarnings = FALSE); file.copy(list.files(OUT_DIR, pattern = "\\.csv$", full.names = TRUE), dest, overwrite = TRUE) } else cat("Drive not mounted: download the CSVs from the Colab file panel (/content/gse268904_qc) instead\n")
 cat("Copied to", dest, "- upload GSE268904_consolidated.csv back to the chat\n")
