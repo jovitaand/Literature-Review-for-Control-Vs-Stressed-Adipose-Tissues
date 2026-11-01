@@ -191,8 +191,7 @@ setnames(an, bcol, "barcode"); an[, barcode := as.character(barcode)]
 others <- setdiff(names(an), "barcode")
 labcols <- others[sapply(an[, ..others], function(x) !is.numeric(x) && uniqueN(x) > 1 && uniqueN(x) < 60)]
 pick <- function(pat) { h <- labcols[grepl(pat, labcols, ignore.case = TRUE)]; if (length(h)) h[1] else NA_character_ }
-celltype_col <- pick("cell.?type|singler|label|annot|ident|cluster")
-if (is.na(celltype_col) && length(labcols)) celltype_col <- labcols[1]
+celltype_col <- pick("cell.?type|singler|label|annot|ident|cluster")   # the real file has NO cell-type column, so this stays NA
 sample_col <- pick("sample|donor|subject|patient|library|orig")
 diab_col   <- pick("diab|status|condition|disease|group")
 depot_col  <- pick("depot|tissue|fat|vat|sat")
@@ -202,7 +201,8 @@ cat("Cell type column:", celltype_col, "| sample:", sample_col, "| diabetes:", d
 cells <- data.table(barcode = bc, barcode_suffix = sub("^.*-", "", bc), umi = umi, genes_detected = ngene,
                     mito_frac = round(mito, 4), endo_markers_detected = endo_n, endo_like = endo_like)
 cells <- merge(cells, an, by = "barcode", all.x = TRUE, sort = FALSE)
-cat("Cells with an author label:", sum(!is.na(cells[[celltype_col]])), "of", nrow(cells), "\\n")
+cells[, in_annotation := barcode %in% an$barcode]
+cat("Barcodes in the matrix:", nrow(cells), "| cells kept by the authors (in annotation):", sum(cells$in_annotation), "\\n")
 """)
 
 md("""
@@ -211,6 +211,11 @@ md("""
 **What this does:** counts cells per author-label, and draws a bar chart. The endothelial bar is highlighted.
 """)
 code("""
+if (is.na(celltype_col)) {
+  cat("The annotation file has no cell-type column (only sample, condition, tissue), so endothelial cells come from our marker rule.\\n")
+  is_endo_label <- rep(FALSE, nrow(cells)); ct <- data.table(cell_type_author_label = "no cell-type labels in file", cells = nrow(cells), share_percent = 100)
+  print(cells[in_annotation == TRUE, .(cells = .N, endothelial_like = sum(endo_like), pct_endothelial_like = round(100 * mean(endo_like), 1))])
+} else {
 is_endo_label <- grepl("endothel", cells[[celltype_col]], ignore.case = TRUE)
 
 ct <- cells[, .N, by = c(celltype_col)][order(-N)]
@@ -227,6 +232,7 @@ dev.off()
 barplot(rev(ct$cells), names.arg = rev(ct$cell_type_author_label), horiz = TRUE, las = 1,
         col = rev(ifelse(grepl("endothel", ct$cell_type_author_label, ignore.case = TRUE), "#d1495b", "#4c78a8")),
         xlab = "Number of cells", main = "Cells per type (endothelial in red)")
+}
 """)
 
 md("""
@@ -237,16 +243,18 @@ If not, it falls back to the **barcode suffix** (-1, -2, ...), which is the samp
 > Why this matters: diabetes status belongs to the **person**, so a fair comparison needs enough people per group, not just many cells.
 """)
 code("""
-by_group <- function(col) {
-  if (is.na(col)) return(NULL)
-  cells[, .(cells = .N,
-            endothelial_author_label = sum(is_endo_label[.I]),
-            endothelial_marker_rule = sum(endo_like)), by = c(col)][order(-cells)]
+A <- cells[in_annotation == TRUE]            # analyse the cells the authors kept
+A[, endo_lab := if (is.na(celltype_col)) FALSE else grepl("endothel", get(celltype_col), ignore.case = TRUE)]
+by_group <- function(cols) {
+  if (any(is.na(cols))) return(NULL)
+  A[, .(cells = .N, endothelial_author_label = sum(endo_lab), endothelial_marker_rule = sum(endo_like),
+        pct_endothelial_marker_rule = round(100 * mean(endo_like), 1)), by = cols][order(-cells)]
 }
 by_sample <- by_group(sample_col); by_diab <- by_group(diab_col); by_depot <- by_group(depot_col)
-by_suffix <- cells[, .(cells = .N, endothelial_marker_rule = sum(endo_like)), by = barcode_suffix][order(as.integer(barcode_suffix))]
-for (nm in c("by_diab", "by_depot", "by_sample")) { cat("\\n---", nm, "---\\n"); print(get(nm)) }
-cat("\\n--- by barcode suffix (sample position in aggregate) ---\\n"); print(by_suffix)
+by_diab_depot <- by_group(c(diab_col, depot_col))
+by_suffix <- cells[, .(barcodes = .N, cells_kept_by_authors = sum(in_annotation), endothelial_marker_rule = sum(endo_like & in_annotation)), by = barcode_suffix][order(as.integer(barcode_suffix))]
+for (nm in c("by_diab_depot", "by_diab", "by_depot", "by_sample")) { cat("\\n---", nm, "---\\n"); print(get(nm)) }
+cat("\\n--- by barcode suffix (= sample position) ---\\n"); print(by_suffix)
 """)
 
 md("""
@@ -257,7 +265,7 @@ md("""
 - every donor is obese; the comparison is **obese diabetic vs obese non-diabetic**, with **no lean control**.
 """)
 code("""
-n_cells <- nrow(cells); n_endo_lab <- sum(is_endo_label, na.rm = TRUE); n_endo_mk <- sum(endo_like)
+n_raw <- nrow(cells); n_cells <- sum(cells$in_annotation); n_endo_lab <- sum(A$endo_lab); n_endo_mk <- sum(A$endo_like)
 
 criteria <- data.table(
   criterion = c("1. Human adipose tissue", "2. Endothelial cells", "3. Control vs type 2 diabetes", "4. More than 10,000 cells"),
@@ -266,9 +274,9 @@ criteria <- data.table(
               "PARTLY (obese diabetic vs obese non-diabetic; no lean control)",
               ifelse(n_cells > CELL_THRESHOLD, "MET", "NOT MET")),
   evidence = c("GEO: Homo sapiens; subcutaneous and visceral adipose SVF",
-               sprintf("%d cells labelled endothelial by authors; %d by our marker rule", n_endo_lab, n_endo_mk),
-               "GEO sample records: 16 diabetic / 16 non-diabetic samples, all from obese people",
-               sprintf("%d cells in the matrix (%d with UMI >= %d); threshold %d", n_cells, sum(umi >= MIN_UMI), MIN_UMI, CELL_THRESHOLD)))
+               if (is.na(celltype_col)) sprintf("no author cell-type labels in the file; %d cells by our marker rule", n_endo_mk) else sprintf("%d cells labelled endothelial by authors; %d by our marker rule", n_endo_lab, n_endo_mk),
+               "All donors obese. Condition per cell is in the annotation file; it disagrees with the GEO sample records for 3 people (see Step 8 note)",
+               sprintf("%d cells kept by the authors (%d barcodes in the matrix); threshold %d", n_cells, n_raw, CELL_THRESHOLD)))
 print(criteria)
 """)
 
@@ -279,7 +287,7 @@ md("""
 Share the Excel and `criteria_check.csv` first (small); the per-cell CSV is large.
 """)
 code("""
-sheets <- list(Criteria = criteria, Cell_types = ct, By_diabetes = by_diab, By_depot = by_depot,
+sheets <- list(Criteria = criteria, Cell_types = ct, By_diabetes_and_depot = by_diab_depot, By_diabetes = by_diab, By_depot = by_depot,
                By_sample = by_sample, By_barcode_suffix = by_suffix,
                Overview = data.table(item = c("Cells in matrix", "Genes", "Cells with UMI >= MIN_UMI", "Median UMI", "Median genes per cell",
                                               "Endothelial (author label)", "Endothelial (marker rule)"),
