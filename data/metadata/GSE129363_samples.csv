@@ -1,0 +1,33 @@
+gsm,title,description,platform,subject,diabetic,tissue,cd34
+GSM3711757,AT-E02-SAT,SVF2,GPL20301,obese individual,Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711758,AT-E03-VAT,SVF3,GPL20301,obese individual,Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711759,AT-E07-SAT,SVF5,GPL20301,obese individual,Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711760,AT-04-VAT,Ate-04-IA,GPL20301,obese individual,Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711761,AT-04-SAT,Ate-04-SC,GPL20301,obese individual,Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711762,AT-05-SAT,Ate-05-SC,GPL20301,obese individual,Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711763,AT-05-VAT,Ate-05-IA,GPL20301,obese individual,Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711764,AT-06-VAT,Ate-06-IA,GPL20301,obese individual,Non Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711765,AT-06-SAT,Ate-06-SC,GPL20301,obese individual,Non Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711766,AT-08-SAT,Ate-08-SC,GPL20301,obese individual,Non Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711767,AT-08-VAT,Ate-08-IA,GPL20301,obese individual,Non Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711768,AT-09-VAT,Ate-09-IA,GPL20301,obese individual,Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711769,AT-09-SAT,Ate-09-SC,GPL20301,obese individual,Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711770,AT-10-SAT,Ate-10-SC,GPL20301,obese individual,Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711771,AT-10-VAT,Ate-10_IA-1,GPL20301,obese individual,Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711772,AT-11-SAT,Ate-11-SC,GPL20301,obese individual,Non Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711773,AT-11-VAT,Ate-11-IA,GPL20301,obese individual,Non Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711774,AT-12-SAT,Ate-12-SC,GPL20301,obese individual,Non Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711775,AT-12-VAT,Ate-12-IA,GPL20301,obese individual,Non Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711776,AT-13-VAT,Ate-13-IA,GPL20301,obese individual,Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711777,AT-13-SAT,Ate-13-SC,GPL20301,obese individual,Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711778,AT-14-SAT,Ate-14-SC,GPL20301,obese individual,Non Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711779,AT-14-VAT,Ate-14-IA,GPL20301,obese individual,Non Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711780,AT-15-VAT,Ate-15-IA,GPL20301,obese individual,Non Diabetic,Visceral adipose tissue,Not FACS Sorted
+GSM3711781,AT-15-SAT,Ate-15-SC,GPL20301,obese individual,Non Diabetic,Subcutaneous adipose tissue,Not FACS Sorted
+GSM3711782,AT-21-VAT-CD34-,AT-E21_IA_Neg,GPL24676,obese individual,Non Diabetic,Visceral adipose tissue,CD34_Negative
+GSM3711783,AT-21-VAT-CD34+,AT-E21_IA_Pos,GPL24676,obese individual,Non Diabetic,Visceral adipose tissue,CD34_Positive
+GSM3711784,AT-21-SAT-CD34-,AT-E21_SC_Neg,GPL24676,obese individual,Non Diabetic,Subcutaneous adipose tissue,CD34_Negative
+GSM3711785,AT-21-SAT-CD34+,AT-E21_SC_Pos,GPL24676,obese individual,Non Diabetic,Subcutaneous adipose tissue,CD34_Positive
+GSM3711786,AT-22-VAT-CD34-,AT-E22_IA_CD34neg,GPL24676,obese individual,Diabetic,Visceral adipose tissue,CD34_Negative
+GSM3711787,AT-22-VAT-CD34+,AT-E22_IA_CD34pos,GPL24676,obese individual,Diabetic,Visceral adipose tissue,CD34_Positive
+GSM3711788,AT-22-SAT-CD34+,AT-E22_SC_CD34pos,GPL24676,obese individual,Diabetic,Subcutaneous adipose tissue,CD34_Positive
