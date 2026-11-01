@@ -1,0 +1,14 @@
+{
+  "GSE129363": {
+    "dest": "data/raw/GSE129363",
+    "files": [
+      {"name": "GSE129363_Discovery_Cohort_barcodes.tsv.gz", "bytes": 172060, "drive_id": "1xVFGimI87DMyyUHoJxbBBr_PXS_tU3bt"},
+      {"name": "GSE129363_Discovery_Cohort_CellAnnotation.txt.gz", "bytes": 139674, "drive_id": "1l77NQm3jVmJ8ieoD9KRpWjGFRaMev5hk"},
+      {"name": "GSE129363_Discovery_Cohort_genes.tsv.gz", "bytes": 264799, "drive_id": "1imnxlaJKfZMK5WUJas-5IXjQbuHNi79y"},
+      {"name": "GSE129363_Discovery_Cohort_matrix.mtx.gz", "bytes": 38536686, "drive_id": "190PY9cnmseA9_xXRD6vBNBeCxXY4tBZS"},
+      {"name": "GSE129363_SVF_Normalised_Data.txt.gz", "bytes": 80827036, "drive_id": "1M2Q1NAnSGLhV3HemzSuHUvIy8RF7mTZf"}
+    ]
+  },
+  "GSE268904": {"dest": "data/raw/GSE268904", "files": [{"name": "GSE268904_RAW.tar", "bytes": null, "drive_id": "1mKaM2c4473gV3zCoCV3F1ZknlCIDlAwq"}]},
+  "GSE278526": {"dest": "data/raw/GSE278526", "files": [{"name": "GSE278526_RAW.tar", "bytes": null, "drive_id": "1DCzYrTIU6j_oFXypNCgTUbHyr1f_kM0b"}]}
+}
