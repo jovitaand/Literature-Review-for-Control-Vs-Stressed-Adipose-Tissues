@@ -12,7 +12,7 @@ Single-cell RNA-seq (10x Genomics 3' v3, NovaSeq 6000) of **CD31-enriched adipos
 | Pt2 | 181 KB | about 9,800 |
 | Pt3 | 84 KB | about 4,500 |
 | Pt4 | 64 KB | about 3,400 |
-| **Total** | | **about 25,900** (estimate, sizes are rounded) |
+| **Total** | | **about 25,800** (estimate, sizes are rounded) |
 The share of these cells that are endothelial is not stated. CD31 is also present on some immune cells, so the endothelial count is lower than the total.
 
 ## Requirement by requirement
@@ -21,7 +21,7 @@ The share of these cells that are endothelial is not stated. CD31 is also presen
 | Control group (lean or obese without diabetes) | **NOT MET** | no BMI, disease or control/case design; four donors in a single group |
 | Type 2 diabetes group | **NOT MET** | diabetes status not stated for any donor |
 | Endothelial cells | **Met in principle** | CD31+ enriched; the paper describes 9 endothelial subsets |
-| Over 10,000 endothelial cells | **Not established** | about 25,900 cells in total; endothelial-only count not given; would need more than about 40% endothelial |
+| Over 10,000 endothelial cells | **Not established** | about 25,800 cells in total; endothelial-only count not given; would need more than about 40% endothelial |
 | Human adipose tissue | **Met** | human subcutaneous adipose tissue (lipoaspirate), 4 donors |
 | Both subcutaneous and visceral | **NOT MET** | subcutaneous only |
 | Gene list | Not checked | needs the matrices; the paper reports ANGPT2 among proteins enriched in CD31+ cells |
