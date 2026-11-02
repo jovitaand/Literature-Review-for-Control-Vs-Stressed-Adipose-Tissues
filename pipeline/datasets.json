@@ -58,5 +58,15 @@
         "drive_id": "1ZAv7krYJ73fHyFzdve7WlAQi4c6YWrcj"
       }
     ]
+  },
+  "GSE155960": {
+    "dest": "data/raw/GSE155960",
+    "files": [
+      {
+        "name": "GSE155960_RAW.tar",
+        "bytes": 165826560,
+        "drive_id": "1sGXAcXDWEqAqaH2p6bfgSYnBdmbn0U7y"
+      }
+    ]
   }
 }
