@@ -38,3 +38,6 @@ The file's p- and q-values come from its own pipeline, so the comparison was re-
 - **Gene list, same conclusion:** CDH5 (log2 FC -0.35, adj. P 0.003), VCAM1 (-0.93, 0.006), ICAM1 (-0.77, 0.0004) and ANGPT2 (-0.53, 0.0007) are significantly lower; PECAM1 (adj. P 0.37), NOS3 (0.36), HIF1A (0.76) and ERG (0.43) show no change.
 - **One correction to the earlier wording:** the file's nominal p-values for ERG (0.015), PECAM1 (0.035) and HIF1A (0.052) looked suggestive, and ERG was called "borderline" (q = 0.078). The independent test does not support that: ERG, PECAM1 and HIF1A are unchanged. Treat them as not changed.
 - VCAM1's drop is somewhat smaller in the independent test (-0.93 vs -1.08), and it is expressed at very low levels (4 to 9 TPM), so its size is uncertain.
+
+## Origin of the cells, checked in the paper (Chavkin et al., Front Cardiovasc Med 2023)
+HAMEC were bought from **ScienCell (catalogue 7200)** and passaged in EGM-2 medium. Donor number, sex, age, BMI, diabetes status and adipose depot are **not stated**. Control = untreated EGM-2 medium (n = 3); EndoMT = 5 ng/ml each of TNF-a, IFN-g and TGF-b1 for 4 days with a medium change at day 2 (n = 3). The paper's human single-cell analysis reused published datasets (Vijay 2020, Hildreth 2021, Emont 2022), not this file.
