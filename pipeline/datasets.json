@@ -78,5 +78,20 @@
         "drive_id": "1QPIi7B2u6Soh09ODS1splmzF_REjW0Y6"
       }
     ]
+  },
+  "GSE241015_tables": {
+    "dest": "data/raw/GSE241015",
+    "files": [
+      {
+        "name": "GSE241015_HAMEC_EndoMT_RNAseq.csv.gz",
+        "bytes": 968524,
+        "drive_id": "1RGe_eR-53A46AU8_8GzUNjneGBnWfNIR"
+      },
+      {
+        "name": "GSE241015_Adipose_EndoMT_RNAseq.csv.gz",
+        "bytes": 456278,
+        "drive_id": "1DJ0sPjdcgl1e3Dvj_0oEB_wD1oKdxiQ2"
+      }
+    ]
   }
 }
