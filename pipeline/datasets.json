@@ -93,5 +93,15 @@
         "drive_id": "1DJ0sPjdcgl1e3Dvj_0oEB_wD1oKdxiQ2"
       }
     ]
+  },
+  "SAT_atlas_object": {
+    "dest": "data/raw/SAT_atlas",
+    "files": [
+      {
+        "name": "Vascular_IntegratedObj_annotated.RDS",
+        "bytes": null,
+        "note": "not in the GitHub repo; obtain from the authors' portal (dreamapp.biomed.au.dk/Kalucka-lab/SAT-vascular_atlas/) or by request"
+      }
+    ]
   }
 }
