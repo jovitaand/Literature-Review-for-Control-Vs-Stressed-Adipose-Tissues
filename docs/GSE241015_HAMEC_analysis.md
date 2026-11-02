@@ -31,3 +31,10 @@ So the transcriptional change is dominated by the interferon response, with a we
 
 ## Against the problem statement
 This file cannot meet it: cultured cells, 3 vs 3, no donors, no diabetes, no depot, no cell counts. The comparison is **control vs cytokine-induced EndoMT, not control vs type 2 diabetes**, so the gene-list changes above must not be read as diabetes effects.
+
+## Independent re-test (limma, added 2 Nov 2026)
+The file's p- and q-values come from its own pipeline, so the comparison was re-run independently: limma with empirical-Bayes moderation (trend and robust options) on log2(TPM + 1), 3 vs 3, genes with mean TPM >= 1 (12,570 genes). Script: `scripts/GSE241015_HAMEC_limma_check.R`; table: `data/metadata/GSE241015_HAMEC_gene_list_limma_check.csv`.
+- Agreement overall: log2 fold changes correlate 0.97 with the file's; 1,731 of the 1,859 genes significant here (adjusted P < 0.05) are also significant in the file; p-values rank-correlate 0.79.
+- **Gene list, same conclusion:** CDH5 (log2 FC -0.35, adj. P 0.003), VCAM1 (-0.93, 0.006), ICAM1 (-0.77, 0.0004) and ANGPT2 (-0.53, 0.0007) are significantly lower; PECAM1 (adj. P 0.37), NOS3 (0.36), HIF1A (0.76) and ERG (0.43) show no change.
+- **One correction to the earlier wording:** the file's nominal p-values for ERG (0.015), PECAM1 (0.035) and HIF1A (0.052) looked suggestive, and ERG was called "borderline" (q = 0.078). The independent test does not support that: ERG, PECAM1 and HIF1A are unchanged. Treat them as not changed.
+- VCAM1's drop is somewhat smaller in the independent test (-0.93 vs -1.08), and it is expressed at very low levels (4 to 9 TPM), so its size is uncertain.
