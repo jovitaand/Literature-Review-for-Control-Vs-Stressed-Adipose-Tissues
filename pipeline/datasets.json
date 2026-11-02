@@ -68,5 +68,15 @@
         "drive_id": "1sGXAcXDWEqAqaH2p6bfgSYnBdmbn0U7y"
       }
     ]
+  },
+  "GSE128889_metadata": {
+    "dest": "data/raw/GSE128889",
+    "files": [
+      {
+        "name": "GSE128889_family.soft.gz",
+        "bytes": 4271,
+        "drive_id": "1QPIi7B2u6Soh09ODS1splmzF_REjW0Y6"
+      }
+    ]
   }
 }
