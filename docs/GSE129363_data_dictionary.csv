@@ -1,0 +1,35 @@
+table,column,type,meaning,source,key / note
+cells,matrix_col,int,Position of the cell in the count matrix (1-based); equals the line number in barcodes.tsv,barcodes.tsv.gz,primary key (with barcode)
+cells,barcode,text,"Cell barcode with aggregate suffix, e.g. AAACCTGAGCCATCGC-1",barcodes.tsv.gz,primary key; join to CellAnnotation.CellID
+cells,barcode_suffix,int,Number after the dash = position of the sample in the Cell Ranger aggregate (1 to 25),derived from barcode,foreign key to samples.barcode_suffix
+cells,in_annotation,bool,"TRUE if the authors kept the cell after their QC (26,350 of 38,170)",CellAnnotation,filter used for all analyses
+cells,sample_name,text,"Author sample name, e.g. SVF2-SAT, Ate-04-VAT (empty if not annotated)",CellAnnotation.SampleName,
+cells,gsm,text,GEO sample accession (GSM3711757 to GSM3711781),samples (sample map),foreign key
+cells,geo_sample_title,text,"GEO sample title, e.g. AT-E02-SAT",samples,
+cells,person,text,"Person (donor) identifier derived from the GEO title: E02, E03, E07, 04, 05, 06, 08 to 15",samples,replicate unit for statistics (14 people)
+cells,tissue,text,"SAT = subcutaneous, VAT = visceral",CellAnnotation.Tissue,
+cells,condition_annotation,text,Diabetic / NonDiabetic according to the annotation file,CellAnnotation.Condition,conflicts with GEO for 3 people
+cells,condition_geo,text,Diabetic / NonDiabetic according to the GEO sample record,samples,
+cells,label_conflict,bool,"TRUE when the two diabetes labels disagree (people E07, 04, 09; 5 samples; 5,559 annotated cells)",derived,
+cells,group_annotation,text,"control (obese, no T2D) or T2D (obese + T2D) from the annotation label",derived,all donors are obese; there is no lean group
+cells,group_geo,text,"same, from the GEO label",derived,
+genes,matrix_row,int,Position of the gene in the count matrix (1-based),genes.tsv.gz,primary key
+genes,ensembl_id,text,Ensembl gene ID,genes.tsv.gz,unique
+genes,symbol,text,"Gene symbol (34 symbols occur twice, 68 rows)",genes.tsv.gz,not unique
+genes,symbol_is_duplicated,bool,TRUE for rows whose symbol occurs more than once,derived,
+genes,symbol_unique,text,Symbol made unique by adding .1 to repeated symbols (used as Seurat feature name),derived,unique
+genes,gene_list_name,text,"Name on the project gene list: ERG, CD31 (PECAM1), VE-cadherin (CDH5), eNOS (NOS3), VCAM1, ICAM1, HIF-1alpha (HIF1A), ANGPT2",derived,
+genes,in_gene_list,bool,TRUE for the 8 genes of interest,derived,
+samples,barcode_suffix,int,Sample position in the aggregate,sample map,primary key
+samples,sample_name,text,Author sample name,sample map,
+samples,gsm,text,GEO sample accession,GEO,unique
+samples,geo_sample_title,text,GEO title,GEO,
+samples,person,text,Donor identifier,derived,14 people; 11 with both depots
+samples,tissue,text,SAT or VAT,,
+samples,condition_annotation,text,Diabetes label in the annotation file,,
+samples,condition_geo,text,Diabetes label in the GEO record,,
+samples,label_conflict,bool,Labels disagree,,
+samples,barcodes,int,Barcodes of this sample in the matrix,derived,
+samples,cells_annotated,int,Cells kept by the authors,derived,
+matrix (not provided),genes x cells,sparse counts,"Raw Cell Ranger counts, 33,694 rows x 38,170 columns; rows follow genes.matrix_row, columns follow cells.matrix_col",GSE129363_Discovery_Cohort_matrix.mtx.gz,needed for expression
+cell types (not provided),-,-,The annotation has no cell-type column; vascular subtypes must be derived from the matrix (see the R script),,

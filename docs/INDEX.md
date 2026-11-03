@@ -21,7 +21,12 @@
 | notebooks/GSE129363_colab_annotated.ipynb | Annotated check and endothelial DE (marker rule) | Run on real data (Part 1) |
 | notebooks/GSE129363_umap_clusters_DE.ipynb | UMAP, clusters, DE, top 50 (version 2) | v1 run on real data; v2 awaits re-run |
 
+| notebooks/GSE129363_endothelial_subsets.ipynb | Merge files, form venous / capillary / arterial / sub / lymphatic AdEC subsets, gene markers | Synthetic test only |
+| notebooks/GSE176171_criteria_check.ipynb, GSE155960_criteria_check.ipynb, SAT_atlas_criteria_check.ipynb | Criteria checks for other datasets | Synthetic tests only |
+
 ## Data and metadata (data/metadata)
+Merged GSE129363 tables and schema: `data/processed/`, `docs/GSE129363_schema.md`, `docs/GSE129363_data_dictionary.csv`.
+
 GEO series and sample records, sample maps and cell annotation for GSE268904, GSE278526, GSE129363; `atlas_source_datasets_screen.csv` (screening of the datasets behind the integrated vascular atlas).
 
 ## Pipeline (pipeline/)
