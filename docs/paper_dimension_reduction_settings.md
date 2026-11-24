@@ -28,3 +28,14 @@ from the paper: only one study and chemistry, so Harmony corrects for sample onl
 from the authors' choices on their 329,774-cell atlas and were not re-tuned for GSE268904; the cluster naming uses our own marker
 lists (PECAM1, CDH5 and the other tested genes excluded), not the authors' reference list; the mitochondrial filter
 (`max_mito_pct`, default 5%) is added because this is a nuclei data set and is not in the authors' code.
+
+## Change made at the user's request: Seurat integration instead of Harmony
+The authors correct for batch with Harmony. In `notebooks/cell_level_analysis_stage1.ipynb` and in section 2b of
+`notebooks/GSE129363_GSE278526_combined_ERG.ipynb`, Harmony is replaced by Seurat's own integration
+(`IntegrateLayers`, one layer per sample): `RPCAIntegration` by default (faster, less memory; set `integration_method` to
+`"CCAIntegration"` for the classic method). Everything else (normalisation, 2,000 variable genes, scaling, 50 PCs, the
+significant-PC rule, resolutions 0.1 and 0.7, 30 components for the vascular UMAP and neighbours) follows the authors' code.
+The integrated reduction is used for UMAP, neighbours and clustering only; the statistics use the raw counts. Samples with fewer
+than `min_cells_layer` cells (default 100) are pooled into one batch, and if Seurat's anchor weighting (`k.weight`) is too high
+for the smallest batch it is halved until the integration runs. If it never runs, the notebook warns and uses the uncorrected PCA.
+Tested on simulated data with both methods; the choice of method has not been compared on the real data.
